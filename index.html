@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="shortcut icon" type="image/svg" href="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/dream-world/25.svg"/>
+        <title>Progate II Week 2 - Pikachu </title>
+    </head>
+    <body>
+        <h1>Get Pikachu!</h1>
+        <button id="btn" onclick="getPokeData()">Get!</button>
+        <div class="container">
+            <div id="card"></div>
+        </div>
+        <style>
+            * {
+                padding: 0;
+                margin: 0;
+                box-sizing: border-box;
+            }
+                
+            h1 {
+                padding: 15px;
+                margin: 10px;
+            }
+
+            .container {
+                width: 180px;
+                margin: 15px 60px;
+            }
+                
+            #card {
+                position: relative;
+                width: 100%;
+                padding: 30px 0 20px 0;
+            }
+
+            #card img {
+                display: block;
+                width: 100px;
+                max-height: 120px;
+                position: relative;
+                margin: 20px auto;
+            }
+
+            .id {
+                width: 80px;
+                background-color:beige;
+                text-align: center;
+                padding: 8px 0;
+                margin-left: auto;
+                border: 1px solid black;
+            }
+            
+            p {
+                font-size: 15px;
+            }
+
+            .poke-name {
+                text-align: center;
+            }
+            
+            .types {
+                display: flex;
+                justify-content:space-evenly;
+                margin: 20px 0 10px 0;
+            }
+                
+            .types span {
+                letter-spacing: 0.4px;
+            }
+                
+            .types span {
+                padding: 5px 20px;
+                color: black;
+            }
+
+            button {
+                margin-left: 30px;
+                font-size: 13px;
+                width: 50px;
+                height: 25px;
+            }
+        </style>
+        <script> 
+            const typeColor = {
+                bug: "#26de81",
+                dragon: "#ffeaa7",
+                electric: "yellow",
+                fairy: "#FF0069",
+                fighting: "#30336b",
+                fire: "#f0932b",
+                flying: "#81ecec",
+                grass: "#00b894",
+                ground: "#EFB549",
+                ghost: "#a55eea",
+                ice: "#74b9ff",
+                normal: "#95afc0",
+                poison: "#6c5ce7",
+                psychic: "#a29bfe",
+                rock: "#2d3436",
+                water: "#0190FF",
+            };
+            
+            const url = "https://pokeapi.co/api/v2/pokemon/25";
+            const card = document.getElementById("card");
+            const btn = document.getElementById("btn");
+
+            let getPokeData = () => {
+                document.getElementById("card").style.display = '';
+                fetch(url)
+                    .then((response) => response.json())
+                    .then((data) => {
+                        console.log(data);
+                        const id = data.id;
+                        const imgSrc = data.sprites.other.dream_world.front_default;
+                        const pokeName = data.name[0].toUpperCase() + data.name.slice(1);
+                        const pokeType = data.types[0].type.name;
+
+                        // Set themeColor based on pokemon type
+                        const themeColor = typeColor[data.types[0].type.name];
+                        console.log(themeColor);
+                        card.innerHTML = `
+                                <p class="poke-name">
+                                    ${id}: ${pokeName}
+                                </p>
+                                <img src=${imgSrc} />
+                                <p class="types">
+                        `;
+                        
+                        let appendTypes = (types) => {
+                        types.forEach((item) => {
+                            let span = document.createElement("SPAN");
+                            span.textContent = `type: ` + pokeType;
+                            document.querySelector(".types").appendChild(span);
+                        });
+                        };
+
+                        let styleCard = (color) => {
+                        card.style.background = `${color}`; 
+                        card.querySelectorAll(".types span").forEach((typeColor) => {
+                            typeColor.style.backgroundColor = color;
+                        });
+                        };
+
+                        appendTypes(data.types);
+                        styleCard(themeColor);
+                });
+            };
+            btn.addEventListener("click", getPokeData);
+        </script>
+    </body>
+</html>
