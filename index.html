@@ -107,7 +107,7 @@
             const card = document.getElementById("card");
             const btn = document.getElementById("btn");
 
-            let getPokeData = () => {
+            const getPokeData = () => {
                 document.getElementById("card").style.display = '';
                 fetch(url)
                     .then((response) => response.json())
@@ -148,7 +148,6 @@
                         styleCard(themeColor);
                 });
             };
-            btn.addEventListener("click", getPokeData);
         </script>
     </body>
 </html>
